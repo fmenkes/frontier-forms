@@ -10,6 +10,7 @@ export interface FrontierDataGraphQLProps {
   client?: ApolloClient<any>; // tslint:disable-line no-any
   schema?: JSONSchema7;
   save?: (values: object) => Promise<undefined | object>;
+  onCompleted?: (data: any) => void; // tslint:disable-line no-any
   formats?: { [k: string]: string };
 }
 
@@ -84,6 +85,9 @@ export function saveData (
         // FIXME: find a way to handle GQL errors on mutation arguments
         return {};
       } else {
+        if (props.onCompleted) {
+          props.onCompleted(result.data);
+        }
         return undefined; // submit succeed
       }
     });
